@@ -57,19 +57,24 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.0" />
 		<PackageReference Include="Microsoft.Maui.Controls" Version="$(MauiVersion)" />
 		<PackageReference Include="Microsoft.Maui.Controls.Compatibility" Version="$(MauiVersion)" />
 		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="8.0.0" />
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Folder Include="ViewModels\" />
-	  <Folder Include="Views\" />
+	  <ProjectReference Include="..\SubManager.Core\SubManager.Core.csproj" />
+	  <ProjectReference Include="..\SubManager.Infrastructure\SubManager.Infrastructure.csproj" />
 	</ItemGroup>
 
 	<ItemGroup>
-	  <ProjectReference Include="..\SubManager.Core\SubManager.Core.csproj" />
-	  <ProjectReference Include="..\SubManager.Infrastructure\SubManager.Infrastructure.csproj" />
+	  <MauiXaml Update="Views\SubscriptionEditPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Views\SubscriptionListPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	</ItemGroup>
 
 </Project>
