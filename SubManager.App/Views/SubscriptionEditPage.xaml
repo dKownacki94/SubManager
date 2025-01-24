@@ -4,7 +4,7 @@
              xmlns:viewmodels="clr-namespace:SubManager.App.ViewModels"
              x:Class="SubManager.App.Views.SubscriptionEditPage"
              Title="Add">
-
+     
     <ScrollView>
         <StackLayout Padding="20" Spacing="15">
 

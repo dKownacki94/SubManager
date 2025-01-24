@@ -37,8 +37,6 @@ namespace SubManager.App
             builder.Services.AddTransient<SubscriptionEditPage>();
             builder.Services.AddTransient<SubscriptionEditViewModel>();
 
-            Routing.RegisterRoute("SubscriptionEditPage", typeof(SubscriptionEditPage));
-            Routing.RegisterRoute("SubscriptionListPage", typeof(SubscriptionListPage));
 #if DEBUG
             builder.Logging.AddDebug();
 #endif

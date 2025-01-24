@@ -9,8 +9,10 @@
     Title="SubManager.App">
 
     <ShellContent 
-        Title="Home" 
         ContentTemplate="{DataTemplate views:SubscriptionListPage}" 
-        Route="SubscriptionListPage"/>
+        Route="list"/>
 
+    <ShellContent 
+        ContentTemplate="{DataTemplate views:SubscriptionEditPage}" 
+        Route="edit"/>
 </Shell>

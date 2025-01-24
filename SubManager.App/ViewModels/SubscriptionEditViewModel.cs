@@ -13,7 +13,7 @@ namespace SubManager.App.ViewModels
         public SubscriptionEditViewModel(ISubscriptionService subscriptionService)
         {
             _subscriptionService = subscriptionService;
-            Subscription = new Subscription(string.Empty, 0, DateTime.Today, DateTime.Today.AddMonths(1));
+            Subscription = new Subscription("Subskrypcja", 0, DateTime.Today, DateTime.Today.AddMonths(1));
         }
 
         [ObservableProperty]

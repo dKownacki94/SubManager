@@ -35,7 +35,7 @@ namespace SubManager.App.ViewModels
         [RelayCommand]
         private async Task AddSubscription()
         {
-            await Shell.Current.GoToAsync("SubscriptionEditPage");
+            await Shell.Current.GoToAsync("//edit");
         }
 
         [RelayCommand]
