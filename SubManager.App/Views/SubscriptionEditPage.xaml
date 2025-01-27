@@ -9,7 +9,7 @@
         <StackLayout Padding="20" Spacing="15">
 
             <!-- Avatar -->
-            <Image Source="{Binding Subscription.AvatarPath, Converter={StaticResource AvatarConverter}}"
+            <Image Source="{Binding AvatarPath, Converter={StaticResource AvatarConverter}}"
                    WidthRequest="100"
                    HeightRequest="100"
                    Aspect="AspectFill"
@@ -19,18 +19,18 @@
 
             <!-- Nazwa -->
             <Entry Placeholder="Nazwa subskrypcji"
-                   Text="{Binding Subscription.Name}" />
+                   Text="{Binding Name}" />
 
             <!-- Cena -->
             <Entry Placeholder="Cena"
                    Keyboard="Numeric"
-                   Text="{Binding Subscription.Price, StringFormat='{0:F2}'}" />
+                   Text="{Binding Price, StringFormat='{0:F2}'}" />
 
             <!-- Data Startu -->
-            <DatePicker Date="{Binding Subscription.StartDate}" />
+            <DatePicker Date="{Binding StartDate}" />
 
             <!-- Data Zakończenia -->
-            <DatePicker Date="{Binding Subscription.EndDate}" />
+            <DatePicker Date="{Binding EndDate}" />
 
             <!-- Przyciski Akcji -->
             <StackLayout Orientation="Horizontal" HorizontalOptions="Center" Spacing="20">

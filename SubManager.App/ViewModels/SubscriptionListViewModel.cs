@@ -1,6 +1,5 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using SubManager.App.Views;
 using SubManager.Core.Entities;
 using SubManager.Core.Interfaces;
 using System.Collections.ObjectModel;
@@ -35,7 +34,7 @@ namespace SubManager.App.ViewModels
         [RelayCommand]
         private async Task AddSubscription()
         {
-            await Shell.Current.GoToAsync("//edit");
+            await Shell.Current.GoToAsync("edit");
         }
 
         [RelayCommand]
@@ -43,7 +42,12 @@ namespace SubManager.App.ViewModels
         {
             if (selectedSubscription != null)
             {
-               // await Shell.Current.GoToAsync($"{nameof(Views.SubscriptionDetailPage)}?id={selectedSubscription.Id}");
+                Dictionary<string, object> parameters = new Dictionary<string, object>
+                {
+                    { "id",selectedSubscription.Id}
+                };
+
+               await Shell.Current.GoToAsync("edit",parameters);
             }
         }
     }

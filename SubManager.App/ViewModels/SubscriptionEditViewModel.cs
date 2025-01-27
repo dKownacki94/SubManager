@@ -13,14 +13,32 @@ namespace SubManager.App.ViewModels
         public SubscriptionEditViewModel(ISubscriptionService subscriptionService)
         {
             _subscriptionService = subscriptionService;
-            Subscription = new Subscription("Subskrypcja", 0, DateTime.Today, DateTime.Today.AddMonths(1));
+        }
+
+        partial void OnSubscriptionIdChanged(int value)
+        {
+            LoadSubscriptionCommand.Execute(null);
         }
 
         [ObservableProperty]
-        private int subscriptionId;
+        private int _subscriptionId;
+
+        private Subscription _subscription;
 
         [ObservableProperty]
-        private Subscription subscription;
+        private string _name;
+
+        [ObservableProperty]
+        private decimal _price;
+
+        [ObservableProperty]
+        private DateTime _startDate = DateTime.Today;
+
+        [ObservableProperty]
+        private DateTime _endDate = DateTime.Today.AddMonths(1);
+
+        [ObservableProperty]
+        private string _avatarPath;
 
         [ObservableProperty]
         private string pageTitle = "Dodaj Subskrypcję";
@@ -30,8 +48,21 @@ namespace SubManager.App.ViewModels
         {
             if (SubscriptionId != 0)
             {
-                Subscription = await _subscriptionService.GetSubscriptionAsync(SubscriptionId);
-                PageTitle = "Edytuj Subskrypcję";
+                _subscription = await _subscriptionService.GetSubscriptionAsync(SubscriptionId);
+                if (_subscription != null)
+                {
+                    Name = _subscription.Name;
+                    Price = _subscription.Price;
+                    StartDate = _subscription.StartDate;
+                    EndDate = _subscription.EndDate;
+                    AvatarPath = _subscription.AvatarPath;
+
+                    PageTitle = "Edytuj Subskrypcję";
+                }
+            }
+            else
+            {
+                _subscription = new Subscription("Subskrypcja", 0, DateTime.Today, DateTime.Today.AddMonths(1));
             }
         }
 
@@ -40,15 +71,21 @@ namespace SubManager.App.ViewModels
         {
             try
             {
+                _subscription.Name = Name;
+                _subscription.Price = Price;
+                _subscription.StartDate = StartDate;
+                _subscription.EndDate = EndDate;
+                _subscription.AvatarPath = AvatarPath;
+
                 if (SubscriptionId == 0)
                 {
-                    await _subscriptionService.AddSubscriptionAsync(Subscription);
+                    await _subscriptionService.AddSubscriptionAsync(_subscription);
                 }
                 else
                 {
-                    await _subscriptionService.UpdateSubscriptionAsync(Subscription);
+                    await _subscriptionService.UpdateSubscriptionAsync(_subscription);
                 }
-                await Shell.Current.GoToAsync(".."); 
+                await Shell.Current.GoToAsync("..");
             }
             catch (Exception ex)
             {
@@ -59,7 +96,7 @@ namespace SubManager.App.ViewModels
         [RelayCommand]
         private async Task Cancel()
         {
-            await Shell.Current.GoToAsync(".."); 
+            await Shell.Current.GoToAsync("..");
         }
 
         [RelayCommand]
@@ -81,18 +118,13 @@ namespace SubManager.App.ViewModels
                     {
                         await stream.CopyToAsync(newStream);
                     }
-                    Subscription.AvatarPath = newFilePath;
+                    AvatarPath = newFilePath;
                 }
             }
             catch (Exception ex)
             {
                 await App.Current.MainPage.DisplayAlert("Błąd", ex.Message, "OK");
             }
-        }
-
-        public async void OnNavigatedTo()
-        {
-            await LoadSubscriptionCommand.ExecuteAsync(null);
         }
     }
 }
