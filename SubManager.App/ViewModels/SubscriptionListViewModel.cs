@@ -14,11 +14,16 @@ namespace SubManager.App.ViewModels
         {
             _subscriptionService = subscriptionService;
             Subscriptions = new ObservableCollection<Subscription>();
-            LoadSubscriptionsCommand.Execute(null);
         }
 
         [ObservableProperty]
         public ObservableCollection<Subscription> subscriptions;
+
+        [RelayCommand]
+        void Appearing()
+        {
+            LoadSubscriptionsCommand.Execute(null);
+        }
 
         [RelayCommand]
         private async Task LoadSubscriptions()

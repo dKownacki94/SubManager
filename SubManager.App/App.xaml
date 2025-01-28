@@ -7,6 +7,7 @@
     <Application.Resources>
         <ResourceDictionary>
             <converters:AvatarConverter x:Key="AvatarConverter" />
+            <converters:SelectionChangedEventArgsConverter x:Key="SelectionChangedEventArgsConverter" />
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="Resources/Styles/Colors.xaml" />
                 <ResourceDictionary Source="Resources/Styles/Styles.xaml" />
