@@ -17,6 +17,9 @@ namespace SubManager.App.ViewModels
         }
 
         [ObservableProperty]
+        private Subscription _selectedSubscription;
+
+        [ObservableProperty]
         public ObservableCollection<Subscription> subscriptions;
 
         [RelayCommand]
@@ -53,6 +56,7 @@ namespace SubManager.App.ViewModels
                 };
 
                await Shell.Current.GoToAsync("edit",parameters);
+               SelectedSubscription = null;
             }
         }
     }

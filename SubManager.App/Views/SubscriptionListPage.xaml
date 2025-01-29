@@ -16,8 +16,8 @@
             Command="{Binding AppearingCommand}"/>
     </ContentPage.Behaviors>
 
-    <CollectionView x:Name="MyCollectionView"
-                    ItemsSource="{Binding Subscriptions}"
+    <CollectionView ItemsSource="{Binding Subscriptions}"
+                    SelectedItem="{Binding SelectedSubscription}"
                     SelectionMode="Single">
         <CollectionView.Behaviors>
             <toolkit:EventToCommandBehavior 
