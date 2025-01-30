@@ -9,21 +9,10 @@ namespace SubManager.App.ViewModels
     public partial class SubscriptionEditViewModel : ObservableObject
     {
         private readonly ISubscriptionService _subscriptionService;
-
-        public SubscriptionEditViewModel(ISubscriptionService subscriptionService)
-        {
-            _subscriptionService = subscriptionService;
-        }
-
-        partial void OnSubscriptionIdChanged(int value)
-        {
-            LoadSubscriptionCommand.Execute(null);
-        }
+        private Subscription _subscription;
 
         [ObservableProperty]
         private int _subscriptionId;
-
-        private Subscription _subscription;
 
         [ObservableProperty]
         private string _name;
@@ -43,39 +32,40 @@ namespace SubManager.App.ViewModels
         [ObservableProperty]
         private string pageTitle = "Dodaj Subskrypcję";
 
+        public SubscriptionEditViewModel(ISubscriptionService subscriptionService)
+        {
+            _subscriptionService = subscriptionService;
+        }
+
         [RelayCommand]
-        private async Task LoadSubscription()
+        private void Appearing()
+        {
+            LoadSubscriptionCommand.Execute(null);
+        }
+
+        [RelayCommand]
+        private async Task LoadSubscriptionAsync()
         {
             if (SubscriptionId != 0)
             {
                 _subscription = await _subscriptionService.GetSubscriptionAsync(SubscriptionId);
                 if (_subscription != null)
                 {
-                    Name = _subscription.Name;
-                    Price = _subscription.Price;
-                    StartDate = _subscription.StartDate;
-                    EndDate = _subscription.EndDate;
-                    AvatarPath = _subscription.AvatarPath;
-
+                    MapSubscriptionToProperties(_subscription);
                     PageTitle = "Edytuj Subskrypcję";
+                    return;
                 }
             }
-            else
-            {
-                _subscription = new Subscription("Subskrypcja", 0, DateTime.Today, DateTime.Today.AddMonths(1));
-            }
+
+            _subscription = new Subscription("Subskrypcja", 0, DateTime.Today, DateTime.Today.AddMonths(1));
         }
 
         [RelayCommand]
-        private async Task Save()
+        private async Task SaveAsync()
         {
             try
             {
-                _subscription.Name = Name;
-                _subscription.Price = Price;
-                _subscription.StartDate = StartDate;
-                _subscription.EndDate = EndDate;
-                _subscription.AvatarPath = AvatarPath;
+                MapPropertiesToSubscription(_subscription);
 
                 if (SubscriptionId == 0)
                 {
@@ -85,6 +75,7 @@ namespace SubManager.App.ViewModels
                 {
                     await _subscriptionService.UpdateSubscriptionAsync(_subscription);
                 }
+
                 await Shell.Current.GoToAsync("..");
             }
             catch (Exception ex)
@@ -94,13 +85,13 @@ namespace SubManager.App.ViewModels
         }
 
         [RelayCommand]
-        private async Task Cancel()
+        private async Task CancelAsync()
         {
             await Shell.Current.GoToAsync("..");
         }
 
         [RelayCommand]
-        private async Task PickAvatar()
+        private async Task PickAvatarAsync()
         {
             try
             {
@@ -113,11 +104,13 @@ namespace SubManager.App.ViewModels
                 if (result != null)
                 {
                     var newFilePath = Path.Combine(FileSystem.AppDataDirectory, result.FileName);
+
                     using (var stream = await result.OpenReadAsync())
                     using (var newStream = File.OpenWrite(newFilePath))
                     {
                         await stream.CopyToAsync(newStream);
                     }
+
                     AvatarPath = newFilePath;
                 }
             }
@@ -125,6 +118,24 @@ namespace SubManager.App.ViewModels
             {
                 await App.Current.MainPage.DisplayAlert("Błąd", ex.Message, "OK");
             }
+        }
+
+        private void MapSubscriptionToProperties(Subscription subscription)
+        {
+            Name = subscription.Name;
+            Price = subscription.Price;
+            StartDate = subscription.StartDate;
+            EndDate = subscription.EndDate;
+            AvatarPath = subscription.AvatarPath;
+        }
+
+        private void MapPropertiesToSubscription(Subscription subscription)
+        {
+            subscription.Name = Name;
+            subscription.Price = Price;
+            subscription.StartDate = StartDate;
+            subscription.EndDate = EndDate;
+            subscription.AvatarPath = AvatarPath;
         }
     }
 }
